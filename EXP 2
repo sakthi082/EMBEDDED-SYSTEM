@@ -1,0 +1,84 @@
+
+/*
+NAME       : SAKTHI RAJAN S
+REG NO     : 19412408
+DEPT       : ECE
+COURSE     : ECA 1704 - EMBEDDED SYSTEM
+PROJECT    : TWO-WAY TRAFFIC SIGNAL CONTROLLER
+*/
+
+// LED connections match Proteus circuit
+
+const int NS_RED    = 2;
+const int NS_YELLOW = 3;
+const int NS_GREEN  = 4;
+
+const int EW_RED    = 5;
+const int EW_YELLOW = 6;
+const int EW_GREEN  = 7;
+
+void setup()
+{
+  pinMode(NS_RED, OUTPUT);
+  pinMode(NS_YELLOW, OUTPUT);
+  pinMode(NS_GREEN, OUTPUT);
+
+  pinMode(EW_RED, OUTPUT);
+  pinMode(EW_YELLOW, OUTPUT);
+  pinMode(EW_GREEN, OUTPUT);
+
+  Serial.begin(9600);
+}
+
+void allOff()
+{
+  digitalWrite(NS_RED, LOW);
+  digitalWrite(NS_YELLOW, LOW);
+  digitalWrite(NS_GREEN, LOW);
+
+  digitalWrite(EW_RED, LOW);
+  digitalWrite(EW_YELLOW, LOW);
+  digitalWrite(EW_GREEN, LOW);
+}
+
+void setState(int state, int duration)
+{
+  allOff();
+
+  switch (state)
+  {
+    case 0:
+      digitalWrite(NS_GREEN, HIGH);
+      digitalWrite(EW_RED, HIGH);
+      Serial.println("S0: NS GREEN - EW RED");
+      break;
+
+    case 1:
+      digitalWrite(NS_YELLOW, HIGH);
+      digitalWrite(EW_RED, HIGH);
+      Serial.println("S1: NS YELLOW - EW RED");
+      break;
+
+    case 2:
+      digitalWrite(NS_RED, HIGH);
+      digitalWrite(EW_GREEN, HIGH);
+      Serial.println("S2: NS RED - EW GREEN");
+      break;
+
+    case 3:
+      digitalWrite(NS_RED, HIGH);
+      digitalWrite(EW_YELLOW, HIGH);
+      Serial.println("S3: NS RED - EW YELLOW");
+      break;
+  }
+
+  delay(duration);
+}
+
+void loop()
+{
+  setState(0, 10000);
+  setState(1, 3000);
+  setState(2, 10000);
+  setState(3, 3000);
+}
